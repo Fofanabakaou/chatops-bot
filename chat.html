@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>ChatOps Bot</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+    #messages { border: 1px solid #ccc; min-height: 200px; padding: 10px; margin-bottom: 10px; white-space: pre-wrap; }
+    .toi { color: #1a4a8a; margin-bottom: 4px; }
+    .bot { color: #222; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>ChatOps Bot</h1>
+  <div id="messages"></div>
+  <input id="question" type="text" placeholder="Pose ta question..." size="40">
+  <button id="envoyer">Envoyer</button>
+
+  <script>
+    const zone = document.getElementById("messages");
+    const champ = document.getElementById("question");
+
+    function ajouter(classe, texte) {
+      const ligne = document.createElement("div");
+      ligne.className = classe;
+      ligne.textContent = texte;
+      zone.appendChild(ligne);
+    }
+
+    async function envoyer() {
+      const question = champ.value;
+      if (question === "") {
+        return;
+      }
+      ajouter("toi", "Toi : " + question);
+      champ.value = "";
+      const reponse = await fetch("/ask?question=" + encodeURIComponent(question));
+      const data = await reponse.json();
+      ajouter("bot", "Bot : " + data.answer);
+    }
+
+    document.getElementById("envoyer").addEventListener("click", envoyer);
+    champ.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        envoyer();
+      }
+    });
+  </script>
+</body>
+</html>
