@@ -2,6 +2,13 @@ import httpx
 
 URL = "https://api.github.com/repos/Fofanabakaou/chatops-bot/actions/runs"
 
+STEP_HELP = {
+    "Run actions/checkout@v4": "télécharge le code du projet",
+    "Run actions/setup-python@v5": "installe Python",
+    "Run pip install -r requirements.txt": "installe les outils du projet",
+    "Run pytest": "lance les tests",
+}
+
 
 def get_runs():
     response = httpx.get(URL)
@@ -44,12 +51,25 @@ def explain_failure():
     return f"Le dernier échec est '{run['display_title']}' : l'étape '{step}' a échoué."
 
 
+def explain_steps():
+    run = get_last_run()
+    response = httpx.get(run["jobs_url"])
+    lines = []
+    for job in response.json()["jobs"]:
+        for step in job["steps"]:
+            if step["name"] in STEP_HELP:
+                lines.append(f"- {step['name']} : {STEP_HELP[step['name']]}")
+    return "Voici les étapes du pipeline :\n" + "\n".join(lines)
+
+
 def answer(question):
     question = question.lower()
     if "statut" in question or "status" in question:
         return describe(get_last_run())
     if "pourquoi" in question or "erreur" in question or "échou" in question or "echou" in question:
         return explain_failure()
+    if "étape" in question or "etape" in question or "explique" in question:
+        return explain_steps()
     return "Je ne comprends pas encore cette question."
 
 
