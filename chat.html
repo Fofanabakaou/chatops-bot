@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>ChatOps Bot</title>
+  <title>ChatOps Бот</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
     #messages { border: 1px solid #ccc; min-height: 200px; padding: 10px; margin-bottom: 10px; white-space: pre-wrap; }
@@ -11,10 +11,10 @@
   </style>
 </head>
 <body>
-  <h1>ChatOps Bot</h1>
+  <h1>ChatOps Бот</h1>
   <div id="messages"></div>
-  <input id="question" type="text" placeholder="Pose ta question..." size="40">
-  <button id="envoyer">Envoyer</button>
+  <input id="question" type="text" placeholder="Задайте вопрос..." size="40">
+  <button id="envoyer">Отправить</button>
 
   <script>
     const zone = document.getElementById("messages");
@@ -32,11 +32,11 @@
       if (question === "") {
         return;
       }
-      ajouter("toi", "Toi : " + question);
+      ajouter("toi", "Вы : " + question);
       champ.value = "";
       const reponse = await fetch("/ask?question=" + encodeURIComponent(question));
       const data = await reponse.json();
-      ajouter("bot", "Bot : " + data.answer);
+      ajouter("bot", "Бот : " + data.answer);
     }
 
     document.getElementById("envoyer").addEventListener("click", envoyer);

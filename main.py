@@ -17,7 +17,7 @@ def ask(question: str):
     try:
         reply = answer(question)
     except httpx.HTTPError:
-        reply = "Impossible de joindre GitHub pour le moment, réessaie."
+        reply = "Не удаётся связаться с GitHub. Попробуйте ещё раз."
     return {"question": question, "answer": reply}
 
 @app.get("/chat", response_class=HTMLResponse)
