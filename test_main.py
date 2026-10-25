@@ -6,4 +6,4 @@ client = TestClient(app)
 
 def test_home():
     response = client.get("/")
-    assert response.json() == {"message": "Casse"}
+    assert response.json() == {"message": "Bonjour"}
