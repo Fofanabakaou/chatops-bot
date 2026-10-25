@@ -73,8 +73,9 @@ def answer(question):
     return "Je ne comprends pas encore cette question."
 
 
-while True:
-    question = input("Toi > ")
-    if question == "quit":
-        break
-    print("Bot >", answer(question))
+if __name__ == "__main__":
+    while True:
+        question = input("Toi > ")
+        if question == "quit":
+            break
+        print("Bot >", answer(question))
